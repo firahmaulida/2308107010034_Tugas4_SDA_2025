@@ -1,0 +1,28 @@
+#include <stdio.h>      // untuk fungsi input/output file
+#include <stdlib.h>     // untuk fungsi rand(), srand()
+#include <time.h>       // untuk fungsi time() sebagai seed random
+
+// Fungsi untuk menghasilkan sejumlah angka acak dan menyimpannya ke file
+void generate_random_numbers(const char *filename, int count, int max_value)
+{
+    FILE *fp = fopen(filename, "w"); // membuka file untuk ditulis
+    if (!fp) { // jika file gagal dibuka
+        perror("File tidak dapat dibuka"); // menampilkan pesan kesalahan
+        return; // keluar dari fungsi
+    }
+
+    srand(time(NULL)); // inisialisasi seed untuk fungsi rand() agar hasil acak berbeda setiap kali dijalankan
+
+    for (int i = 0; i < count; i++) {
+        int num = rand() % max_value; // menghasilkan angka acak dari 0 hingga max_value - 1
+        fprintf(fp, "%d\n", num); // menulis angka ke dalam file, diikuti newline
+    }
+
+    fclose(fp); // menutup file setelah selesai
+}
+
+int main() {
+    generate_random_numbers("data_angka.txt", 20000000, 2000000); 
+    // menghasilkan 20 juta angka acak dengan nilai maksimal 1.999.999 dan menyimpannya ke file "data_angka.txt"
+    return 0;
+}
